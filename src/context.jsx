@@ -1,7 +1,7 @@
 import React, { useState, useContext, useReducer, useEffect } from 'react'
 import cartItems from './data'
 import reducer from './reducer'
-import { CLEAR_CART, CLEAR_ITEM } from './actions'
+import { CLEAR_CART, CLEAR_ITEM, INCREASE, DECREASE } from './actions'
 
 // ATTENTION!!!!!!!!!!
 // I SWITCHED TO PERMANENT DOMAIN
@@ -16,15 +16,26 @@ const initialState = {
 	amount: 0,
 }
 
+console.log(initialState.cart)
+
 const AppProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState)
 
 	const clearCart = () => {
 		dispatch({ type: CLEAR_CART })
 	}
-	const clearItem = (id) => {
+
+	const clearItem = id => {
 		dispatch({ type: CLEAR_ITEM, payload: { id } })
 		// dispatch({ type: CLEAR_ITEM, payload: id  }) // we can pass 'payload' as 'id', not as the obj with 'id'
+	}
+
+	const increase = id => {
+		dispatch({ type: INCREASE, payload: id })
+	}
+
+	const decrease = id => {
+		dispatch({ type: DECREASE, payload: id })
 	}
 
 	useEffect(() => {
@@ -38,7 +49,7 @@ const AppProvider = ({ children }) => {
 					return
 				}
 				const data = await response.json()
-				console.log(data)
+				// console.log(data)
 			} catch (error) {
 				console.log(error)
 			}
@@ -52,6 +63,8 @@ const AppProvider = ({ children }) => {
 				...state,
 				clearCart,
 				clearItem,
+				increase,
+				decrease,
 			}}
 		>
 			{children}
