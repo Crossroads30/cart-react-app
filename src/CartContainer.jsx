@@ -1,9 +1,6 @@
 import React, { useReducer } from 'react'
 import CartItem from './CartItem'
 import { useGlobalContext } from './context'
-import reducer from './reducer'
-import { CLEAR_CART } from './actions'
-
 
 const CartContainer = () => {
 	// const [state, dispatch] = useReducer(reducer, initialState)

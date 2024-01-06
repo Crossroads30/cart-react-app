@@ -1,7 +1,13 @@
 import React, { useState, useContext, useReducer, useEffect } from 'react'
 import cartItems from './data'
 import reducer from './reducer'
-import { CLEAR_CART, CLEAR_ITEM, INCREASE, DECREASE } from './actions'
+import {
+	CLEAR_CART,
+	CLEAR_ITEM,
+	INCREASE,
+	DECREASE,
+	GET_TOTAL,
+} from './actions'
 
 // ATTENTION!!!!!!!!!!
 // I SWITCHED TO PERMANENT DOMAIN
@@ -39,23 +45,25 @@ const AppProvider = ({ children }) => {
 	}
 
 	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = await fetch(url)
-				if (!response.ok) {
-					// case for 'fetch' to handle '400th' & '500th' errors!
-					setIsError(true)
-					setIsLoading(false)
-					return
-				}
-				const data = await response.json()
-				// console.log(data)
-			} catch (error) {
-				console.log(error)
-			}
-		}
-		fetchData()
-	}, [])
+		// const fetchData = async () => {
+		// 	try {
+		// 		const response = await fetch(url)
+		// 		if (!response.ok) {
+		// 			// case for 'fetch' to handle '400th' & '500th' errors!
+		// 			setIsError(true)
+		// 			setIsLoading(false)
+		// 			return
+		// 		}
+		// 		const data = await response.json()
+		// 		// console.log(data)
+		// 	} catch (error) {
+		// 		console.log(error)
+		// 	}
+		// }
+	
+			dispatch({ type: GET_TOTAL })
+		// fetchData()
+	}, [state.cart])
 
 	return (
 		<AppContext.Provider

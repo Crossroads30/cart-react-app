@@ -1,4 +1,10 @@
-import { CLEAR_CART, CLEAR_ITEM, INCREASE, DECREASE } from './actions'
+import {
+	CLEAR_CART,
+	CLEAR_ITEM,
+	INCREASE,
+	DECREASE,
+	GET_TOTAL,
+} from './actions'
 
 const reducer = (state, action) => {
 	if (action.type === CLEAR_CART) {
@@ -28,12 +34,33 @@ const reducer = (state, action) => {
 				}
 				return cartItem
 			})
-			.filter(
-				cartItem => cartItem.amount !== 0
-			)
+			.filter(cartItem => cartItem.amount !== 0)
 		return {
 			...state,
 			cart: tempCart,
+		}
+	}
+	if (action.type === GET_TOTAL) {
+		let { total, amount } = state.cart.reduce(
+			(cartTotal, cartItem) => {
+				const { price, amount } = cartItem
+				const itemTotalPrice = price * amount // if we increase count of item we multiply their price by number of items
+
+				cartTotal.total += itemTotalPrice
+				cartTotal.amount += amount
+				return cartTotal
+			},
+			{
+				total: 0,
+				amount: 0,
+			}
+		)
+		total = parseFloat(total.toFixed(2)) // fix numbers after dot
+
+		return {
+			...state,
+			total,
+			amount,
 		}
 	}
 	return state
