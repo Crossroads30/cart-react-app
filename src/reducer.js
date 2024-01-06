@@ -107,8 +107,8 @@ const reducer = (state, action) => {
 			loading: false,
 		}
 	}
-	return state
-	// throw new Error(`No matching "${action.type}" - action type`)
+	// return state
+	throw new Error(`No matching "${action.type}" - action type`)
 }
 
 export default reducer
