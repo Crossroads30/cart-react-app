@@ -7,6 +7,9 @@ import {
 	INCREASE,
 	DECREASE,
 	GET_TOTAL,
+	DISPLAY_ITEMS,
+	LOADING,
+	DISPLAY_ERROR,
 } from './actions'
 
 // ATTENTION!!!!!!!!!!
@@ -17,12 +20,10 @@ const AppContext = React.createContext()
 const initialState = {
 	loading: false,
 	error: false,
-	cart: cartItems,
+	cart: [],
 	total: 0,
 	amount: 0,
 }
-
-console.log(initialState.cart)
 
 const AppProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState)
@@ -44,25 +45,31 @@ const AppProvider = ({ children }) => {
 		dispatch({ type: DECREASE, payload: id })
 	}
 
+	const fetchData = async () => {
+		try {
+			const response = await fetch(url)
+			dispatch({ type: LOADING })
+			
+			if (!response.ok) {
+				// case for 'fetch' to handle '400th' & '500th' errors!
+				dispatch({ type: DISPLAY_ERROR })
+				return
+			}
+			const cart = await response.json()
+			dispatch({ type: DISPLAY_ITEMS, payload: cart })
+			// console.log(data)
+		} catch (error) {
+			console.log(error)
+			dispatch({ type: DISPLAY_ERROR })
+		}
+	}
+
 	useEffect(() => {
-		// const fetchData = async () => {
-		// 	try {
-		// 		const response = await fetch(url)
-		// 		if (!response.ok) {
-		// 			// case for 'fetch' to handle '400th' & '500th' errors!
-		// 			setIsError(true)
-		// 			setIsLoading(false)
-		// 			return
-		// 		}
-		// 		const data = await response.json()
-		// 		// console.log(data)
-		// 	} catch (error) {
-		// 		console.log(error)
-		// 	}
-		// }
-	
-			dispatch({ type: GET_TOTAL })
-		// fetchData()
+		fetchData()
+	}, [])
+
+	useEffect(() => {
+		dispatch({ type: GET_TOTAL })
 	}, [state.cart])
 
 	return (
@@ -73,6 +80,7 @@ const AppProvider = ({ children }) => {
 				clearItem,
 				increase,
 				decrease,
+				fetchData,
 			}}
 		>
 			{children}
