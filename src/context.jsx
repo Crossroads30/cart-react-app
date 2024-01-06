@@ -10,6 +10,7 @@ import {
 	DISPLAY_ITEMS,
 	LOADING,
 	DISPLAY_ERROR,
+	TOGGLE_AMOUNT,
 } from './actions'
 
 // ATTENTION!!!!!!!!!!
@@ -49,7 +50,7 @@ const AppProvider = ({ children }) => {
 		try {
 			const response = await fetch(url)
 			dispatch({ type: LOADING })
-			
+
 			if (!response.ok) {
 				// case for 'fetch' to handle '400th' & '500th' errors!
 				dispatch({ type: DISPLAY_ERROR })
@@ -62,6 +63,10 @@ const AppProvider = ({ children }) => {
 			console.log(error)
 			dispatch({ type: DISPLAY_ERROR })
 		}
+	}
+
+	const toggleAmount = (id, type) => {
+		dispatch({ type: TOGGLE_AMOUNT, payload: { id, type } })
 	}
 
 	useEffect(() => {
@@ -81,6 +86,7 @@ const AppProvider = ({ children }) => {
 				increase,
 				decrease,
 				fetchData,
+				toggleAmount,
 			}}
 		>
 			{children}

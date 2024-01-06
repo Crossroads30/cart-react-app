@@ -7,6 +7,7 @@ import {
 	DISPLAY_ITEMS,
 	LOADING,
 	DISPLAY_ERROR,
+	TOGGLE_AMOUNT,
 } from './actions'
 
 const reducer = (state, action) => {
@@ -17,23 +18,18 @@ const reducer = (state, action) => {
 		let newCart = state.cart.filter(item => item.id !== action.payload.id)
 		return { ...state, cart: newCart }
 	}
-	if (action.type === INCREASE) {
-		let tempCart = state.cart.map(cartItem => {
-			if (cartItem.id === action.payload) {
-				return { ...cartItem, amount: cartItem.amount + 1 }
-			}
-			return cartItem
-		})
-		return {
-			...state,
-			cart: tempCart,
-		}
-	}
-	if (action.type === DECREASE) {
+
+	// common dispatch for increase/decrease amount of items
+	if (action.type === TOGGLE_AMOUNT) {
 		let tempCart = state.cart
 			.map(cartItem => {
-				if (cartItem.id === action.payload) {
-					return { ...cartItem, amount: cartItem.amount - 1 }
+				if (cartItem.id === action.payload.id) {
+					if (action.payload.type === 'increase') {
+						return { ...cartItem, amount: cartItem.amount + 1 }
+					}
+					if (action.payload.type === 'decrease') {
+						return { ...cartItem, amount: cartItem.amount - 1 }
+					}
 				}
 				return cartItem
 			})
@@ -43,6 +39,32 @@ const reducer = (state, action) => {
 			cart: tempCart,
 		}
 	}
+	// if (action.type === INCREASE) {
+	// 	let tempCart = state.cart.map(cartItem => {
+	// 		if (cartItem.id === action.payload) {
+	// 			return { ...cartItem, amount: cartItem.amount + 1 }
+	// 		}
+	// 		return cartItem
+	// 	})
+	// 	return {
+	// 		...state,
+	// 		cart: tempCart,
+	// 	}
+	// }
+	// if (action.type === DECREASE) {
+	// 	let tempCart = state.cart
+	// 		.map(cartItem => {
+	// 			if (cartItem.id === action.payload) {
+	// 				return { ...cartItem, amount: cartItem.amount - 1 }
+	// 			}
+	// 			return cartItem
+	// 		})
+	// 		.filter(cartItem => cartItem.amount !== 0)
+	// 	return {
+	// 		...state,
+	// 		cart: tempCart,
+	// 	}
+	// }
 	if (action.type === GET_TOTAL) {
 		let { total, amount } = state.cart.reduce(
 			(cartTotal, cartItem) => {
