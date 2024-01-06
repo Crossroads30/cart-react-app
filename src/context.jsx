@@ -1,8 +1,7 @@
 import React, { useState, useContext, useReducer, useEffect } from 'react'
 import cartItems from './data'
 import reducer from './reducer'
-import { CLEAR_CART } from './actions'
-
+import { CLEAR_CART, CLEAR_ITEM } from './actions'
 
 // ATTENTION!!!!!!!!!!
 // I SWITCHED TO PERMANENT DOMAIN
@@ -20,10 +19,13 @@ const initialState = {
 const AppProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState)
 
-		const clearCart = () => {
-			dispatch({ type: CLEAR_CART })
-		}
-
+	const clearCart = () => {
+		dispatch({ type: CLEAR_CART })
+	}
+	const clearItem = (id) => {
+		dispatch({ type: CLEAR_ITEM, payload: { id } })
+		// dispatch({ type: CLEAR_ITEM, payload: id  }) // we can pass 'payload' as 'id', not as the obj with 'id'
+	}
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -49,6 +51,7 @@ const AppProvider = ({ children }) => {
 			value={{
 				...state,
 				clearCart,
+				clearItem,
 			}}
 		>
 			{children}
