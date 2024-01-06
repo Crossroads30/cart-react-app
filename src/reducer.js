@@ -4,6 +4,9 @@ import {
 	INCREASE,
 	DECREASE,
 	GET_TOTAL,
+	DISPLAY_ITEMS,
+	LOADING,
+	DISPLAY_ERROR,
 } from './actions'
 
 const reducer = (state, action) => {
@@ -56,11 +59,30 @@ const reducer = (state, action) => {
 			}
 		)
 		total = parseFloat(total.toFixed(2)) // fix numbers after dot
-
 		return {
 			...state,
 			total,
 			amount,
+		}
+	}
+	if (action.type === DISPLAY_ERROR) {
+		return {
+			...state,
+			loading: false,
+			error: true,
+		}
+	}
+	if (action.type === LOADING) {
+		return {
+			...state,
+			loading: true,
+		}
+	}
+	if (action.type === DISPLAY_ITEMS) {
+		return {
+			...state,
+			cart: action.payload,
+			loading: false,
 		}
 	}
 	return state
