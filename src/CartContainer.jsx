@@ -7,7 +7,7 @@ import { CLEAR_CART } from './actions'
 
 const CartContainer = () => {
 	// const [state, dispatch] = useReducer(reducer, initialState)
-	const { cart } = useGlobalContext()
+	const { cart, total } = useGlobalContext()
 
 	const clearCart = () => {
 		dispatch({ type: CLEAR_CART })
@@ -42,7 +42,7 @@ const CartContainer = () => {
 				<hr />
 				<div className='cart-total'>
 					<h4>
-						total <span>$0.00</span>
+						total <span>${total}</span>
 					</h4>
 				</div>
 				<button className='btn clear-btn' onClick={clearCart}>
