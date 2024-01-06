@@ -7,12 +7,7 @@ import { CLEAR_CART } from './actions'
 
 const CartContainer = () => {
 	// const [state, dispatch] = useReducer(reducer, initialState)
-	const { cart, total } = useGlobalContext()
-
-	const clearCart = () => {
-		dispatch({ type: CLEAR_CART })
-		// setCart([])
-	}
+	const { cart, total, clearCart } = useGlobalContext()
 
 	if (cart.length === 0) {
 		return (

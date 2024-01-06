@@ -1,6 +1,8 @@
 import React, { useState, useContext, useReducer, useEffect } from 'react'
 import cartItems from './data'
 import reducer from './reducer'
+import { CLEAR_CART } from './actions'
+
 
 // ATTENTION!!!!!!!!!!
 // I SWITCHED TO PERMANENT DOMAIN
@@ -17,6 +19,11 @@ const initialState = {
 
 const AppProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState)
+
+		const clearCart = () => {
+			dispatch({ type: CLEAR_CART })
+		}
+
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -41,6 +48,7 @@ const AppProvider = ({ children }) => {
 		<AppContext.Provider
 			value={{
 				...state,
+				clearCart,
 			}}
 		>
 			{children}
