@@ -7,15 +7,15 @@ import CartContainer from './CartContainer'
 // items
 
 function App() {
-	const { isLoading, isError } = useGlobalContext()
-	if (isLoading) {
+	const { loading, error } = useGlobalContext()
+	if (loading) {
 	  return (
 	    <div className='loading'>
 	      <h1>Loading...</h1>
 	    </div>
 	  )
 	}
-	if (isError) {
+	if (error) {
 		return (
 			<div className='loading'>
 				<h1>Something went wrong...</h1>
